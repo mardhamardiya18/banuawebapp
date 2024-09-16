@@ -22,6 +22,10 @@ class Product extends Model
         'category_id'
     ];
 
+    protected $casts = [
+        'is_recommend' => 'boolean',
+    ];
+
     public function setNameAttribute($value)
     {
         $this->attributes['name'] = $value;
@@ -31,6 +35,12 @@ class Product extends Model
     public function getPriceAttribute($value)
     {
         return 'Rp ' . number_format($value, 0, ',', '.');
+    }
+
+    public function setPriceAttribute($value)
+    {
+        // Hapus semua karakter selain angka sebelum disimpan ke database
+        $this->attributes['price'] = preg_replace('/[^\d]/', '', $value);
     }
 
     public function category()
